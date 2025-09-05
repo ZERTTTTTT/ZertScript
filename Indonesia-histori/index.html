@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Kemerdekaan Indonesia</title>
+    <link rel="icon" type="image/png" href="logo_80.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Open Graph untuk WhatsApp dan media sosial -->
+  <meta property="og:title" content="Sejarah Kemerdekaan Indonesia">
+  <meta property="og:description" content="Sejarah panjang menuju kemerdekaan Indonesia.">
+  <meta property="og:image" content="logo_80.jpg">
+  <meta property="og:url" content="https://zero-id.my.id/Indonesia-histori/">
+  <meta property="og:type" content="article">
+
+  <!-- Twitter Card (opsional, untuk Twitter/X) -->
+  <meta name="twitter:card" content="logo_80.jpg">
+  <meta name="twitter:title" content="Sejarah Kemerdekaan Indonesia">
+  <meta name="twitter:description" content="Sejarah panjang menuju kemerdekaan Indonesia.">
+  <meta name="twitter:image" content="logo_80.jpg">
+
+    
+    <style>
+        /* Reset & Basic Setup */
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: #0A0A0A;
+            color: #F5F5F5;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Font Styles */
+        .font-serif-display { font-family: 'Merriweather', serif; }
+
+        /* Layout & Sections */
+        .story-section {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2rem;
+            flex-direction: column;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            max-width: 1100px; /* Lebar maksimum konten */
+        }
+
+        /* Animations */
+        .animated-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 2s ease-out, transform 2s ease-out;
+        }
+        .animated-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Start Overlay */
+        #start-overlay {
+            position: fixed;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            transition: opacity 1s ease-out;
+            padding: 1rem;
+        }
+        #start-overlay h1 {
+            font-size: 2.25rem; /* 4xl */
+            text-align: center;
+            color: white;
+        }
+        #startButton {
+            margin-top: 2rem;
+            background-color: white;
+            color: #991b1b; /* red-800 */
+            font-weight: bold;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            font-size: 1.25rem; /* xl */
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s ease;
+        }
+        #startButton:hover {
+            transform: scale(1.05);
+        }
+
+        /* Naskah Section */
+        #naskah-section img {
+            max-width: 100%;
+            width: 42rem; /* max-w-2xl */
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(255, 255, 255, 0.1), 0 4px 6px -2px rgba(255, 255, 255, 0.05);
+        }
+        #naskah-section p {
+            font-style: italic;
+            color: #D1D5DB; /* gray-300 */
+            margin-top: 1.5rem;
+        }
+
+        /* Pembacaan Section (Ken Burns Effect) */
+        .ken-burns-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+        .ken-burns-image {
+            position: absolute;
+            inset: -10%;
+            width: 120%;
+            height: 120%;
+            background-size: cover;
+            background-position: center;
+            animation: kenBurns 40s linear forwards;
+            opacity: 0;
+            transition: opacity 3s ease-in;
+        }
+        @keyframes kenBurns {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-2%, 0); }
+        }
+        #proklamasi-text-container {
+            max-width: 42rem; /* max-w-4xl */
+            margin: auto;
+            padding: 2rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+            border-radius: 0.5rem;
+        }
+        #proklamasi-text-container h2 {
+            font-size: 2.25rem; /* 4xl */
+            margin-bottom: 1.5rem;
+        }
+        #proklamasi-text-container p {
+            text-align: left;
+            font-size: 1.125rem; /* lg */
+            line-height: 1.75; /* leading-relaxed */
+            text-indent: 2em;
+        }
+
+        /* Montage Sections (Perjuangan & Budaya) */
+        .montage-container {
+            position: absolute;
+            inset: 0;
+            background-color: #0A0A0A;
+        }
+        .montage-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* DIUBAH AGAR GAMBAR UTUH */
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+            transform: scale(1.1);
+            animation: subtlePan 25s linear alternate infinite;
+        }
+        .montage-image.active {
+            opacity: 0.5;
+        }
+        @keyframes subtlePan {
+            from { transform: scale(1.1) translateX(-2%); }
+            to { transform: scale(1.1) translateX(2%); }
+        }
+        .caption {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            text-align: center;
+            color: white;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            width: 100%;
+            padding: 4rem 1rem 2rem 1rem;
+        }
+        .caption.active {
+            opacity: 1;
+        }
+        .caption h2 {
+            font-size: 1.875rem; /* 3xl */
+        }
+        .caption p {
+            font-size: 1.125rem; /* lg */
+            margin-top: 0.5rem;
+        }
+
+        /* Final Section */
+        #final-section {
+            background-color: #7f1d1d; /* bg-red-900 */
+        }
+        #final-section h1 {
+            font-size: 2.25rem; /* 4xl */
+            font-weight: 900; /* font-black */
+        }
+        #final-section h2 {
+            font-size: 1.875rem; /* 3xl */
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+        #final-section p {
+            font-size: 1.25rem; /* xl */
+            margin-top: 2rem;
+        }
+
+        /* Media Queries for larger screens */
+        @media (min-width: 768px) {
+            #start-overlay h1 { font-size: 3.75rem; /* md:text-6xl */ }
+            #proklamasi-text-container h2 { font-size: 3rem; /* md:text-5xl */ }
+            #proklamasi-text-container p { font-size: 1.25rem; /* md:text-xl */ }
+            .caption h2 { font-size: 3rem; /* md:text-5xl */ }
+            #final-section h1 { font-size: 4.5rem; /* md:text-8xl */ }
+            #final-section h2 { font-size: 3.75rem; /* md:text-6xl */ }
+            #final-section p { font-size: 1.875rem; /* md:text-3xl */ }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="audio-proklamasi" src="https://dl.dropboxusercontent.com/scl/fi/dzr1go6fpjwducyzs8y8x/wwd.mp3juice.blog-Pembacaan-teks-proklamasi-kemerdekaan-Bangsa-Indonesia-320-KBps.mp3?rlkey=i8oqfhq4p6oxs4c6iar7ngmcy&st=fu7931qx&dl=1"></audio>
+
+    <div id="start-overlay">
+        <h1 class="font-serif-display"> Kemerdekaan</h1>
+        <button id="startButton">Mulai Perjalanan</button>
+    </div>
+
+    <div id="main-container" class="scroll-container" style="display: none;">
+        
+        <section id="naskah-section" class="story-section">
+            <div class="content">
+                <img src="https://dl.dropboxusercontent.com/scl/fi/tmrodm3po8fjv6urk79q5/images-53.jpeg?rlkey=ylv05qn3i54d063rbb9e5rzeo&st=c2r3022g&dl=0" alt="[Gambar Naskah Proklamasi Asli]" class="animated-item" onerror="this.onerror=null;this.src='https://dl.dropboxusercontent.com/scl/fi/j6hbtq1wnzrzrf2ed9cse/images-54.jpeg?rlkey=nwj5sl2i9hcfkiebq6qbcqwgi&st=4cypk8t3&dl=0';">
+                <p class="font-serif-display animated-item" style="transition-delay: 0.5s;">Naskah otentik, ditulis tangan oleh Ir. Soekarno.</p>
+            </div>
+        </section>
+
+        <section id="pembacaan-section" class="story-section">
+            <div class="ken-burns-container">
+                <div class="ken-burns-image" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/d/d3/Soekarno-Hatta_proklamasi_kemerdekaan.jpg');"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
+            </div>
+            <div class="content">
+                <div id="proklamasi-text-container" class="animated-item">
+                    <h2 class="font-serif-display">PROKLAMASI</h2>
+                    <p class="font-serif-display">Kami bangsa Indonesia dengan ini menjatakan kemerdekaan Indonesia.</p>
+                    <p class="font-serif-display" style="margin-top: 1rem;">Hal-hal jang mengenai pemindahan kekoeasaan d.l.l., diselenggarakan dengan tjara saksama dan dalam tempo jang sesingkat-singkatnja.</p>
+                    <div style="text-align: right; margin-top: 2rem;">
+                        <p class="font-serif-display">Djakarta, hari 17 boelan 8 tahoen '05</p>
+                        <p class="font-serif-display" style="margin-top: 0.5rem;">Atas nama bangsa Indonesia.</p>
+                        <p class="font-serif-display" style="font-size: 1.5rem; margin-top: 1rem;">Soekarno/Hatta.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="perjuangan-section" class="story-section">
+            <div id="perjuangan-montage" class="montage-container"></div>
+            <div id="perjuangan-caption" class="caption">
+                <h2 class="font-serif-display"></h2>
+                <p></p>
+            </div>
+        </section>
+
+        <section id="budaya-section" class="story-section">
+            <div id="budaya-montage" class="montage-container"></div>
+            <div id="budaya-caption" class="caption">
+                <h2 class="font-serif-display"></h2>
+                <p></p>
+            </div>
+        </section>
+
+        <section id="final-section" class="story-section">
+            <div class="content">
+                <h1 class="animated-item">DIRGAHAYU INDONESIA</h1>
+                <h2 class="animated-item" style="transition-delay: 1s;">80 TAHUN</h2>
+                <p class="animated-item" style="transition-delay: 2s;">17 Agustus 1945 – 2025</p>
+                <p class="animated-item" style="font-weight: bold; margin-top: 3rem; transition-delay: 3s;">Jayalah Negeriku, MERDEKA!</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const startOverlay = document.getElementById('start-overlay');
+        const startButton = document.getElementById('startButton');
+        const mainContainer = document.getElementById('main-container');
+        const audioProklamasi = document.getElementById('audio-proklamasi');
+        const sections = document.querySelectorAll('.story-section');
+        const kenBurnsImage = document.querySelector('.ken-burns-image');
+        const proklamasiTextContainer = document.getElementById('proklamasi-text-container');
+
+        const perjuanganData = [
+            { img: 'https://dl.dropboxusercontent.com/scl/fi/gkv8x81lkqhj906jag3ct/images-48.jpeg?rlkey=chu445uai1wl8mvss170rl0i2&st=b93dn2nl&dl=0', title: 'Pertempuran 10 November', location: 'Surabaya' },
+            { img: 'https://dl.dropboxusercontent.com/scl/fi/bnheuyen1nv1y6vr58sw1/images-49.jpeg?rlkey=uc42gl9ozdy816kezbtn855pn&st=oc72ivmy&dl=0', title: 'Perjuangan Diplomasi', location: 'Linggarjati, Jawa Barat' },
+            { img: 'https://dl.dropboxusercontent.com/scl/fi/t5oe1oe0ylz1wn68yg38q/1722765037.jpg?rlkey=t479213ckc98jy10ww2qakyqn&st=14qihps7&dl=0', title: 'Perang Gerilya', location: 'Seluruh Nusantara' }
+        ];
+        const budayaData = [
+            { img: 'https://dl.dropboxusercontent.com/scl/fi/i1g1ksp8bvzmoyud8lp5f/download-4.jpeg?rlkey=skuu1kymtqb0fzjir76bu7m6m&st=jo0emmw8&dl=0', title: 'Wayang Kulit', location: 'Warisan Budaya dari Jawa' },
+            { img: 'https://dl.dropboxusercontent.com/scl/fi/fcdw7r2z1bvoymid7t39y/images-51.jpeg?rlkey=qypez4arls98l8g1xrvpopplc&st=czklwfqy&dl=0', title: 'Candi Borobudur', location: 'Kemegahan Arsitektur di Magelang' },
+            { img: 'https://dl.dropboxusercontent.com/scl/fi/ja6hgpmsrtqmsyikigrd6/images-52.jpeg?rlkey=cuoepa6ulcov0za6nlvo1bsax&st=wcb9allc&dl=0', title: 'Tari Kecak', location: 'Seni Pertunjukan Magis dari Bali' }
+        ];
+
+        function createMontage(containerId, captionId, data) {
+            const container = document.getElementById(containerId);
+            const captionEl = document.getElementById(captionId);
+            const titleEl = captionEl.querySelector('h2');
+            const locationEl = captionEl.querySelector('p');
+
+            data.forEach(item => {
+                const img = document.createElement('img');
+                img.src = item.img;
+                img.className = 'montage-image';
+                container.appendChild(img);
+            });
+
+            const images = container.querySelectorAll('.montage-image');
+            let currentIndex = 0;
+
+            function showNext() {
+                const lastIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+                images[lastIndex].classList.remove('active');
+                captionEl.classList.remove('active');
+
+                setTimeout(() => {
+                    images[currentIndex].classList.add('active');
+                    titleEl.textContent = data[currentIndex].title;
+                    locationEl.textContent = data[currentIndex].location;
+                    captionEl.classList.add('active');
+                    currentIndex = (currentIndex + 1) % images.length;
+                }, 1500);
+            }
+            showNext();
+            return setInterval(showNext, 6000);
+        }
+
+        async function startExperience() {
+            try {
+                await audioProklamasi.play();
+                startOverlay.style.opacity = '0';
+                setTimeout(() => { startOverlay.style.display = 'none'; }, 1000);
+                mainContainer.style.display = 'block';
+                document.body.style.overflow = 'auto';
+                runSequence();
+            } catch (error) {
+                console.error("Audio play failed:", error);
+                alert("Mohon izinkan pemutaran audio di browser Anda untuk memulai.");
+            }
+        }
+
+        function runSequence() {
+            const sequence = [
+                { section: 'naskah-section', duration: 7000 },
+                { section: 'pembacaan-section', duration: 36000 },
+                { section: 'perjuangan-section', duration: 18000 },
+                { section: 'budaya-section', duration: 18000 },
+                { section: 'final-section', duration: 10000 }
+            ];
+            let cumulativeTime = 0;
+            sequence.forEach(step => {
+                setTimeout(() => {
+                    document.getElementById(step.section).scrollIntoView({ behavior: 'smooth' });
+                }, cumulativeTime);
+                cumulativeTime += step.duration;
+            });
+        }
+
+        startButton.addEventListener('click', startExperience);
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.animated-item').forEach(item => item.classList.add('is-visible'));
+                    if (entry.target.id === 'pembacaan-section') {
+                        kenBurnsImage.style.opacity = '0.4';
+                        setTimeout(() => {
+                            proklamasiTextContainer.classList.add('is-visible');
+                        }, 2000);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => observer.observe(section));
+        
+        createMontage('perjuangan-montage', 'perjuangan-caption', perjuanganData);
+        createMontage('budaya-montage', 'budaya-caption', budayaData);
+    });
+    </script>
+</body>
+          </html>

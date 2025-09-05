@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCRIP ZERO-ID</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Variabel Warna & Styling Dasar --- */
+        :root {
+            --background-color: #12121c;
+            --primary-color: #1a1b26;
+            --secondary-color: #2a2c3d;
+            --accent-color: #00d1ff;
+            --text-color: #c0c5ce;
+            --header-color: #ffffff;
+            --success-color: #00ffaa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* --- Kontainer Utama --- */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: var(--primary-color);
+            border-radius: 15px;
+            border: 1px solid var(--secondary-color);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Header --- */
+        .header {
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(0, 209, 255, 0.1), transparent);
+            border-bottom: 1px solid var(--secondary-color);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--header-color);
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px var(--accent-color);
+        }
+
+        /* --- Konten & Seksi --- */
+        .content {
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--header-color);
+            margin-bottom: 1rem;
+        }
+
+        .section p {
+            font-size: 1rem;
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto 1rem auto;
+        }
+
+        /* --- Seksi Perintah (Command) --- */
+        .command-section {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .command-box {
+            background-color: var(--background-color);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--success-color);
+            text-align: left;
+            white-space: pre;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            border: 1px solid #333;
+        }
+
+        .copy-button {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--accent-color), #00aaff);
+            color: var(--header-color);
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 209, 255, 0.2);
+        }
+
+        .copy-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 209, 255, 0.3);
+        }
+
+        /* --- Seksi Kontak --- */
+        .contact-section {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: 1px solid var(--secondary-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-color);
+            color: var(--header-color);
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* --- Responsif --- */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header h1 { font-size: 2.5rem; }
+            .content { padding: 1.5rem; }
+            .command-box { white-space: nowrap; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <h1>SCRIP ZERO-ID</h1>
+        </header>
+
+        <main class="content">
+            <section class="section">
+                <h2>Alat Bantu untuk Pengembang</h2>
+                <p>
+                    Skrip ini hanya berfokus untuk **developer** atau pengembang untuk mempermudah observasi dengan fitur teleportasi ke pemain dan ESP untuk melihat nama serta jarak.
+                </p>
+                <p style="color: #ffcc00;">
+                    Skrip ini juga bisa buat pemain biasa, namun **jangan untuk merusuh**. Harap gunakan dengan bijak.
+                </p>
+            </section>
+
+            <section class="section command-section">
+                <h2>COPY COMMAND UNTUK EKSEKUSI PROGRAM</h2>
+                <div class="command-box" id="command-text">loadstring(game:HttpGet("https://zero-id.my.id/roblox/skrip/zero.lua"))()</div>
+                <button class="copy-button" onclick="copyCommand()">Salin Perintah</button>
+            </section>
+
+            <section class="section">
+                <h2>Komunitas & Kontak</h2>
+                <div class="contact-section">
+                    <a href="https://t.me/@zert_cihuy" class="btn" target="_blank">
+                        <svg viewBox="0 0 24 24"><path d="M9.78,18.65L10.26,14.21L18.83,5.64C19.32,5.15 19.32,4.35 18.83,3.86L18.14,3.17C17.65,2.68 16.85,2.68 16.36,3.17L7.79,11.74L3.35,11.26C2.79,11.21 2.27,11.54 2.09,12.08L0.04,17.58C-0.14,18.12 0.18,18.64 0.72,18.82L6.22,20.87C6.76,21.05 7.28,20.72 7.33,20.16L7.81,15.72L12.25,16.2L9.78,18.65Z"></path></svg>
+                        Kontak Pribadi
+                    </a>
+                    <a href="https://t.me/zoblox" class="btn" target="_blank">
+                        <svg viewBox="0 0 24 24"><path d="M20,8L4,8L4,6L20,6L20,8M20,14L4,14L4,12L20,12L20,14M20,20L4,20L4,18L20,18L20,20M22,4L2,4L2,2L22,2L22,4Z"></path></svg>
+                        Channel
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function copyCommand() {
+            const commandText = document.getElementById('command-text').innerText;
+            const tempInput = document.createElement('textarea');
+            tempInput.value = commandText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const copyButton = document.querySelector('.copy-button');
+            copyButton.innerText = 'Tersalin!';
+            copyButton.style.backgroundColor = 'var(--success-color)';
+            copyButton.style.color = 'var(--background-color)';
+            
+            setTimeout(() => {
+                copyButton.innerText = 'Salin Perintah';
+                copyButton.style.backgroundColor = '';
+                copyButton.style.color = '';
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>

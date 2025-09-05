@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZERT Pixel Convert - Professional Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-family: 'Inter', sans-serif;
+            --transition-speed: 0.3s;
+        }
+
+        /* Light Theme (Default) */
+        body.light-theme {
+            --bg-color: #f4f7f9;
+            --surface-color: #ffffff;
+            --text-color: #2c3e50;
+            --text-muted-color: #7f8c8d;
+            --border-color: #e0e6ed;
+            --primary-color: #3498db;
+            --primary-hover-color: #2980b9;
+        }
+
+        /* Dark Theme */
+        body.dark-theme {
+            --bg-color: #1a202c;
+            --surface-color: #2d3748;
+            --text-color: #e2e8f0;
+            --text-muted-color: #a0aec0;
+            --border-color: #4a5568;
+            --primary-color: #4299e1;
+            --primary-hover-color: #63b3ed;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            font-size: 16px;
+            line-height: 1.6;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        .top-bar {
+            width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .theme-switcher { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .theme-toggle { width: 40px; height: 20px; background: var(--text-muted-color); border-radius: 10px; position: relative; }
+        .theme-toggle::before { content: ''; position: absolute; width: 16px; height: 16px; background: var(--surface-color); border-radius: 50%; top: 2px; left: 2px; transition: transform var(--transition-speed); }
+        body.dark-theme .theme-toggle::before { transform: translateX(20px); }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: background-color var(--transition-speed), border-color var(--transition-speed);
+        }
+        
+        .controls-panel { display: flex; flex-direction: column; gap: 1.5rem; }
+        .control-group { display: flex; flex-direction: column; gap: 0.75rem; }
+        .group-label { font-weight: 700; font-size: 1rem; }
+        .input-row { display: flex; gap: 1rem; }
+        .input-row > div { flex: 1; }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        input[type="file"] { display: none; }
+        .file-upload-label {
+            text-align: center;
+            padding: 1rem;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+        .file-upload-label:hover { border-color: var(--primary-color); background-color: var(--bg-color); }
+        #fileName { font-size: 0.9rem; color: var(--text-muted-color); }
+
+        button, .button {
+            padding: 12px 20px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+        button:hover, .button:hover { background-color: var(--primary-hover-color); }
+
+        .palette-switcher { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .palette-switcher .button { background-color: var(--surface-color); color: var(--text-color); border: 1px solid var(--border-color); }
+        .palette-switcher .button:hover { background-color: var(--bg-color); }
+        .palette-switcher .button.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+        .palette { display: grid; grid-template-columns: repeat(auto-fill, 28px); gap: 6px; max-height: 110px; overflow-y: auto; padding: 10px; border-radius: 8px; background-color: var(--bg-color); }
+        .color-box { width: 28px; height: 28px; border-radius: 4px; }
+        
+        .canvas-area { display: flex; flex-direction: column; }
+        canvas { background-color: #000; border-radius: 8px; width: 100%; height: auto; cursor: grab; object-fit: contain; }
+        canvas:active { cursor: grabbing; }
+
+        .footer { text-align: center; padding: 2rem; color: var(--text-muted-color); font-size: 0.9rem; }
+
+        @media (max-width: 900px) {
+            .main-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="light-theme">
+
+<header class="top-bar">
+    <h1>ZERT Pixel Convert</h1>
+    <div class="theme-switcher" id="themeSwitcher">
+        <span>Dark Mode</span>
+        <div class="theme-toggle"></div>
+    </div>
+</header>
+
+<main class="main-container">
+    <aside class="controls-panel card">
+        <div class="control-group">
+            <span class="group-label">1. Upload Image</span>
+            <label for="imageUpload" class="file-upload-label">
+                <span>Click to upload</span>
+                <div id="fileName">No file selected</div>
+            </label>
+            <input type="file" id="imageUpload" accept="image/*">
+        </div>
+
+        <div class="control-group">
+            <span class="group-label">2. Pixel Size</span>
+            <div class="input-row">
+                <div><label for="pixelWidth">Width</label><input type="number" id="pixelWidth" min="1" value="32"></div>
+                <div><label for="pixelHeight">Height</label><input type="number" id="pixelHeight" min="1" value="32"></div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <span class="group-label">3. Options</span>
+            <div><input type="checkbox" id="showGrid" checked> <label for="showGrid">Show Grid</label></div>
+        </div>
+
+        <div class="control-group">
+            <span class="group-label">4. Palette Preview</span>
+            <select id="colorFilter" style="display: none;">
+                <option value="free">Free Only</option>
+                <option value="premium">Premium Only</option>
+                <option value="all" selected>All Colors</option>
+            </select>
+            <div id="paletteContainer" class="palette"></div>
+        </div>
+        
+        <button id="downloadBtn">Download PNG</button>
+    </aside>
+
+    <main class="canvas-area card">
+        <div class="palette-switcher">
+            <button class="button" data-palette="free">Use Free Palette</button>
+            <button class="button" data-palette="premium">Use Premium Palette</button>
+            <button class="button active" data-palette="all">Use All Colors</button>
+        </div>
+        <canvas id="pixelCanvas" width="800" height="800"></canvas>
+    </main>
+</main>
+
+<footer class="footer">
+    <p>&copy; <span id="copyright-year"></span> ZERT Pixel Convert. All Rights Reserved. Created by zert_cihuy.</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const elements = {
+        themeSwitcher: document.getElementById('themeSwitcher'),
+        imageUpload: document.getElementById('imageUpload'),
+        fileName: document.getElementById('fileName'),
+        pixelWidth: document.getElementById('pixelWidth'),
+        pixelHeight: document.getElementById('pixelHeight'),
+        showGrid: document.getElementById('showGrid'),
+        colorFilter: document.getElementById('colorFilter'),
+        paletteContainer: document.getElementById('paletteContainer'),
+        downloadBtn: document.getElementById('downloadBtn'),
+        canvas: document.getElementById('pixelCanvas'),
+        paletteButtons: document.querySelectorAll('.palette-switcher .button'),
+    };
+    const ctx = elements.canvas.getContext('2d', { willReadFrequently: true });
+
+    let img = new Image();
+    let imgAspectRatio = 1;
+    let originalPixelData = null;
+    let paletteRGBs = [];
+    const colorCache = {};
+    let isDragging = false, lastX = 0, lastY = 0, offsetX = 0, offsetY = 0;
+    
+    const freeColors = ["black","darkgray","gray","lightgray","white","darkred","red","orange","gold","yellow","lightyellow","darkgreen","green","lightgreen","darkcyan","teal","lightseagreen","cyan","darkblue","blue","indigo","lightsteelblue","darkmagenta","purple","plum","deeppink","pink","lightpink","saddlebrown","brown","beige"];
+    const premiumColors = ["dimgray","firebrick","lightcoral","darkorange","darkgoldenrod","goldenrod","khaki","darkolivegreen","olive","olivedrab","lightcyan","lightblue","midnightblue","darkslateblue","slateblue","lightslateblue","peru","peachpuff","moccasin","tan","burlywood","wheat","bisque","linen","darkslategray","slategray","lightslategray"];
+    
+    // --- Theme Management ---
+    const applyTheme = (theme) => {
+        document.body.className = theme;
+        localStorage.setItem('theme', theme);
+    };
+    elements.themeSwitcher.addEventListener('click', () => {
+        const newTheme = document.body.classList.contains('light-theme') ? 'dark-theme' : 'light-theme';
+        applyTheme(newTheme);
+    });
+    const savedTheme = localStorage.getItem('theme') || 'light-theme';
+    applyTheme(savedTheme);
+    
+    // --- Copyright Year ---
+    document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+    // --- Core Functions ---
+    const getRGB = (colorName) => {
+        if (colorCache[colorName]) return colorCache[colorName];
+        const div = document.createElement("div");
+        div.style.color = colorName;
+        document.body.appendChild(div);
+        const rgbStr = window.getComputedStyle(div).color;
+        document.body.removeChild(div);
+        const rgb = rgbStr.match(/\d+/g).map(Number);
+        colorCache[colorName] = rgb;
+        return rgb;
+    };
+
+    const findClosestColor = (r, g, b, currentPalette) => {
+        if (currentPalette.length === 0) return [r, g, b];
+        let closestColor = currentPalette[0];
+        let minDistance = Infinity;
+        for (const color of currentPalette) {
+            const dist = (r - color[0]) ** 2 + (g - color[1]) ** 2 + (b - color[2]) ** 2;
+            if (dist < minDistance) { minDistance = dist; closestColor = color; }
+        }
+        return closestColor;
+    };
+    
+    const renderPalettePreview = () => {
+        const filter = elements.colorFilter.value;
+        const colorsToShow = (filter === 'free') ? freeColors : (filter === 'premium') ? premiumColors : [...freeColors, ...premiumColors];
+        elements.paletteContainer.innerHTML = colorsToShow.map(color => `<div class="color-box" style="background:${color}"></div>`).join('');
+    };
+
+    const drawPixelated = () => {
+        ctx.clearRect(0, 0, elements.canvas.width, elements.canvas.height);
+        if (!originalPixelData) {
+            ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-muted-color');
+            ctx.font = "20px 'Inter', sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("Upload an image to start converting", elements.canvas.width / 2, elements.canvas.height / 2);
+            return;
+        }
+
+        const w = parseInt(elements.pixelWidth.value) || 1;
+        const h = parseInt(elements.pixelHeight.value) || 1;
+        const grid = elements.showGrid.checked;
+        const paletteType = elements.colorFilter.value;
+        
+        const currentPaletteRgb = (paletteType === 'free') ? freeColors.map(getRGB) : 
+                                  (paletteType === 'premium') ? premiumColors.map(getRGB) : 
+                                  [...freeColors, ...premiumColors].map(getRGB);
+
+        const canvasSize = Math.min(elements.canvas.width, elements.canvas.height);
+        const pixelSize = canvasSize / Math.max(w, h);
+        const totalWidth = pixelSize * w;
+        const totalHeight = pixelSize * h;
+        
+        // Center the image
+        offsetX = (elements.canvas.width - totalWidth) / 2;
+        offsetY = (elements.canvas.height - totalHeight) / 2;
+        
+        ctx.imageSmoothingEnabled = false;
+
+        for (let y = 0; y < h; y++) {
+            for (let x = 0; x < w; x++) {
+                const i = (y * originalPixelData.width + x) * 4;
+                let r = originalPixelData.data[i], g = originalPixelData.data[i+1], b = originalPixelData.data[i+2];
+
+                [r, g, b] = findClosestColor(r, g, b, currentPaletteRgb);
+                
+                ctx.fillStyle = `rgb(${r},${g},${b})`;
+                ctx.fillRect(offsetX + x * pixelSize, offsetY + y * pixelSize, pixelSize, pixelSize);
+
+                if (grid && pixelSize > 5) {
+                    ctx.strokeStyle = "rgba(128, 128, 128, 0.2)";
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(offsetX + x * pixelSize, offsetY + y * pixelSize, pixelSize, pixelSize);
+                }
+            }
+        }
+    };
+    
+    const processImage = () => {
+        if (!img.src) return;
+        const w = parseInt(elements.pixelWidth.value) || 1;
+        const h = parseInt(elements.pixelHeight.value) || 1;
+        
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = w; tempCanvas.height = h;
+        const tctx = tempCanvas.getContext("2d");
+        tctx.drawImage(img, 0, 0, w, h);
+        originalPixelData = tctx.getImageData(0, 0, w, h);
+        drawPixelated();
+    };
+
+    const syncDimensions = (changed) => {
+        if (!img.src) return;
+        let w = parseInt(elements.pixelWidth.value) || 1;
+        let h = parseInt(elements.pixelHeight.value) || 1;
+        if (changed === "width") elements.pixelHeight.value = Math.round(w / imgAspectRatio);
+        else elements.pixelWidth.value = Math.round(h * imgAspectRatio);
+        processImage();
+    };
+    
+    // --- Event Listeners ---
+    elements.imageUpload.addEventListener("change", e => {
+        const file = e.target.files[0];
+        if (file) {
+            elements.fileName.textContent = file.name;
+            const reader = new FileReader();
+            reader.onload = ev => img.src = ev.target.result;
+            reader.readAsDataURL(file);
+        }
+    });
+    img.onload = () => {
+        imgAspectRatio = img.width / img.height;
+        syncDimensions("width");
+    };
+
+    elements.pixelWidth.addEventListener("change", () => syncDimensions("width"));
+    elements.pixelHeight.addEventListener("change", () => syncDimensions("height"));
+    elements.showGrid.addEventListener("change", drawPixelated);
+
+    elements.paletteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            elements.paletteButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            const palette = button.dataset.palette;
+            elements.colorFilter.value = palette;
+            renderPalettePreview();
+            drawPixelated();
+        });
+    });
+
+    elements.downloadBtn.addEventListener("click", () => {
+        if (!originalPixelData) return;
+        const w = parseInt(elements.pixelWidth.value) || 1;
+        const h = parseInt(elements.pixelHeight.value) || 1;
+        const paletteType = elements.colorFilter.value;
+        const currentPaletteRgb = (paletteType === 'free') ? freeColors.map(getRGB) : (paletteType === 'premium') ? premiumColors.map(getRGB) : [...freeColors, ...premiumColors].map(getRGB);
+
+        const finalCanvas = document.createElement("canvas");
+        finalCanvas.width = w; finalCanvas.height = h;
+        const fctx = finalCanvas.getContext("2d");
+
+        for (let y = 0; y < h; y++) {
+            for (let x = 0; x < w; x++) {
+                const i = (y * originalPixelData.width + x) * 4;
+                let [r, g, b] = [originalPixelData.data[i], originalPixelData.data[i+1], originalPixelData.data[i+2]];
+                [r, g, b] = findClosestColor(r, g, b, currentPaletteRgb);
+                fctx.fillStyle = `rgb(${r},${g},${b})`;
+                fctx.fillRect(x, y, 1, 1);
+            }
+        }
+        const link = document.createElement("a");
+        link.download = "zert-pixel-art.png";
+        link.href = finalCanvas.toDataURL();
+        link.click();
+    });
+
+    // --- Initial Setup ---
+    renderPalettePreview();
+    drawPixelated();
+});
+</script>
+
+</body>
+          </html>
